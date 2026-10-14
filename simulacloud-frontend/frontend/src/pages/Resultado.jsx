@@ -82,14 +82,26 @@ export default function Resultado() {
                   </span>
                 </div>
                 <p style={styles.revisaoEnunciado}>{q.enunciado}</p>
-                <p style={styles.revisaoExplicacao}>{q.explicacao}</p>
+                <p style={styles.revisaoExplicacao}>
+                  <strong>Sua resposta:</strong>{" "}
+                  {q.alternativas.find((alt) => alt.id === respondida)?.texto ?? "Não respondida"}
+                </p>
+                {!correta && (
+                  <p style={styles.revisaoExplicacao}>
+                    <strong>Resposta correta:</strong>{" "}
+                    {q.alternativas.find((alt) => alt.id === q.correta)?.texto}
+                  </p>
+                )}
+                <p style={{ ...styles.revisaoExplicacao, marginTop: "10px" }}>
+                  {q.explicacao}
+                </p>
               </div>
             );
           })}
         </div>
       </section>
 
-      <button style={styles.cta} onClick={() => navigate("/simulado")}>
+      <button style={styles.cta} onClick={() => navigate("/simulado/A")}>
         Refazer simulado
       </button>
     </div>

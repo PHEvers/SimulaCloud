@@ -189,7 +189,128 @@ export const questoes = [
     correta: "d",
     explicacao:
       "O plano Enterprise Support é o único que inclui um Technical Account Manager (TAM) dedicado, além de suporte 24/7 com tempo de resposta mais rápido para casos críticos."
+  },
+  {
+    id: "q13",
+    dominio: "conceitos",
+    enunciado:
+      "Uma aplicação precisa continuar disponível mesmo se um data center local apresentar uma falha. Qual recurso da infraestrutura AWS ajuda a distribuir recursos por locais isolados dentro de uma região?",
+    alternativas: [
+      { id: "a", texto: "Zonas de Disponibilidade (Availability Zones)" },
+      { id: "b", texto: "Grupos de usuários do IAM" },
+      { id: "c", texto: "Tags de cobrança" },
+      { id: "d", texto: "Buckets do Amazon S3" }
+    ],
+    correta: "a",
+    explicacao:
+      "As Zonas de Disponibilidade são locais isolados dentro de uma região AWS. Distribuir a aplicação entre várias zonas pode aumentar a disponibilidade e reduzir o impacto de falhas localizadas."
+  },
+  {
+    id: "q14",
+    dominio: "tecnologia",
+    enunciado:
+      "Uma equipe quer usar um banco de dados relacional sem administrar tarefas rotineiras como backups e aplicação de patches na infraestrutura. Qual serviço é mais adequado?",
+    alternativas: [
+      { id: "a", texto: "Amazon DynamoDB" },
+      { id: "b", texto: "Amazon RDS" },
+      { id: "c", texto: "Amazon EBS" },
+      { id: "d", texto: "Amazon Route 53" }
+    ],
+    correta: "b",
+    explicacao:
+      "O Amazon Relational Database Service (RDS) facilita a configuração, operação e escalabilidade de bancos relacionais gerenciados. A AWS automatiza diversas tarefas administrativas, embora o cliente continue responsável por aspectos como dados, permissões e configuração."
+  },
+  {
+    id: "q15",
+    dominio: "tecnologia",
+    enunciado:
+      "Um site precisa entregar imagens, vídeos e outros arquivos estáticos a usuários de diferentes regiões com baixa latência. Qual serviço AWS ajuda a distribuir esse conteúdo por pontos de presença?",
+    alternativas: [
+      { id: "a", texto: "AWS CloudTrail" },
+      { id: "b", texto: "Amazon CloudFront" },
+      { id: "c", texto: "AWS Secrets Manager" },
+      { id: "d", texto: "Amazon Inspector" }
+    ],
+    correta: "b",
+    explicacao:
+      "O Amazon CloudFront é uma rede de entrega de conteúdo (CDN) que distribui conteúdo por locais de borda, ajudando a reduzir a latência para os usuários."
+  },
+  {
+    id: "q16",
+    dominio: "tecnologia",
+    enunciado:
+      "Qual serviço pode coletar métricas e configurar alarmes para monitorar recursos e aplicações na AWS?",
+    alternativas: [
+      { id: "a", texto: "Amazon CloudWatch" },
+      { id: "b", texto: "AWS Artifact" },
+      { id: "c", texto: "AWS Certificate Manager" },
+      { id: "d", texto: "Amazon Macie" }
+    ],
+    correta: "a",
+    explicacao:
+      "O Amazon CloudWatch permite monitorar métricas, logs e eventos e configurar alarmes para acompanhar o comportamento dos recursos e aplicações."
+  },
+  {
+    id: "q17",
+    dominio: "seguranca",
+    enunciado:
+      "Uma empresa precisa administrar várias contas AWS de forma centralizada e aplicar políticas de governança entre elas. Qual serviço foi criado para ajudar nessa tarefa?",
+    alternativas: [
+      { id: "a", texto: "AWS Organizations" },
+      { id: "b", texto: "Amazon Polly" },
+      { id: "c", texto: "AWS Snowball" },
+      { id: "d", texto: "Amazon Athena" }
+    ],
+    correta: "a",
+    explicacao:
+      "O AWS Organizations permite gerenciar várias contas de forma centralizada e usar políticas de controle de serviços (SCPs) para definir permissões máximas disponíveis para as contas ou unidades organizacionais."
+  },
+  {
+    id: "q18",
+    dominio: "financeiro",
+    enunciado:
+      "Um administrador quer receber recomendações sobre boas práticas de segurança, desempenho, tolerância a falhas e otimização de custos no ambiente AWS. Qual serviço pode ajudar?",
+    alternativas: [
+      { id: "a", texto: "AWS Trusted Advisor" },
+      { id: "b", texto: "Amazon EFS" },
+      { id: "c", texto: "AWS App Runner" },
+      { id: "d", texto: "Amazon Kinesis" }
+    ],
+    correta: "a",
+    explicacao:
+      "O AWS Trusted Advisor avalia o ambiente em relação a verificações e recomendações de boas práticas, incluindo categorias como segurança, desempenho, tolerância a falhas e custo. A disponibilidade de verificações varia conforme o plano de suporte e os serviços."
+  },
+  {
+    id: "q19",
+    dominio: "financeiro",
+    enunciado:
+      "Uma empresa mantém uso previsível de computação e quer reduzir custos em troca de um compromisso de uso por um período. Qual opção pode oferecer esse tipo de economia?",
+    alternativas: [
+      { id: "a", texto: "AWS Budgets" },
+      { id: "b", texto: "Savings Plans" },
+      { id: "c", texto: "AWS Artifact" },
+      { id: "d", texto: "Amazon CloudWatch Logs" }
+    ],
+    correta: "b",
+    explicacao:
+      "Savings Plans oferecem preços menores em troca de um compromisso de uso por hora durante um período definido, conforme os termos do plano. A escolha deve considerar o padrão de consumo para evitar compromissos inadequados."
+  },
+  {
+    id: "q20",
+    dominio: "tecnologia",
+    enunciado:
+      "Dois componentes de uma aplicação precisam trocar mensagens sem depender de estarem disponíveis exatamente ao mesmo tempo. Qual serviço pode manter as mensagens em uma fila até serem processadas?",
+    alternativas: [
+      { id: "a", texto: "Amazon SQS" },
+      { id: "b", texto: "Amazon Route 53" },
+      { id: "c", texto: "AWS Direct Connect" },
+      { id: "d", texto: "AWS WAF" }
+    ],
+    correta: "a",
+    explicacao:
+      "O Amazon Simple Queue Service (SQS) é um serviço gerenciado de filas que ajuda a desacoplar componentes, permitindo que mensagens aguardem até serem processadas pelos consumidores."
   }
+
 ];
 
 export function questoesPorDominio() {

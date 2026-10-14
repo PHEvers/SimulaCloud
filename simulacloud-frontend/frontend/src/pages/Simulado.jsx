@@ -7,18 +7,12 @@ import QuestionCard from "../components/QuestionCard.jsx";
 export default function Simulado() {
   const navigate = useNavigate();
   const [indice, setIndice] = useState(0);
-  const [respostas, setRespostas] = useState({});
-
   const questaoAtual = questoes[indice];
   const ehUltima = indice === questoes.length - 1;
 
-  function selecionar(alternativaId) {
-    setRespostas((prev) => ({ ...prev, [questaoAtual.id]: alternativaId }));
-  }
-
   function proxima() {
     if (ehUltima) {
-      navigate("/resultado", { state: { respostas } });
+      setIndice(0);
     } else {
       setIndice((i) => i + 1);
     }
@@ -34,37 +28,51 @@ export default function Simulado() {
         <ProgressBar atual={indice + 1} total={questoes.length} />
       </div>
 
-      <QuestionCard
-        questao={questaoAtual}
-        respostaSelecionada={respostas[questaoAtual.id]}
-        onSelecionar={selecionar}
-      />
+      <p style={styles.instrucao}>
+        Modo de estudo: a resposta correta e a explicação aparecem logo abaixo de cada questão.
+      </p>
+
+      <QuestionCard questao={questaoAtual} />
 
       <div style={styles.nav}>
         <button
-          style={styles.navSecundario}
+          style={{ ...styles.navSecundario, ...(indice === 0 ? styles.desabilitado : {}) }}
           onClick={anterior}
           disabled={indice === 0}
         >
           Anterior
         </button>
-        <button
-          style={styles.navPrimario}
-          onClick={proxima}
-          disabled={!respostas[questaoAtual.id]}
-        >
-          {ehUltima ? "Ver resultado" : "Próxima"}
+        <span style={styles.contador}>{indice + 1} de {questoes.length}</span>
+        <button style={styles.navPrimario} onClick={proxima}>
+          {ehUltima ? "Recomeçar revisão" : "Próxima questão"}
         </button>
       </div>
+      {ehUltima && (
+        <button style={styles.voltar} onClick={() => navigate("/")}>
+          Voltar para o início
+        </button>
+      )}
     </div>
   );
 }
 
 const styles = {
+  instrucao: {
+    color: "var(--text-muted)",
+    fontSize: "14px",
+    margin: "0 0 16px"
+  },
   nav: {
     display: "flex",
+    alignItems: "center",
     justifyContent: "space-between",
+    gap: "12px",
     marginTop: "20px"
+  },
+  contador: {
+    color: "var(--text-muted)",
+    fontSize: "13px",
+    whiteSpace: "nowrap"
   },
   navPrimario: {
     background: "var(--gold)",
@@ -81,6 +89,20 @@ const styles = {
     border: "1px solid var(--border)",
     borderRadius: "6px",
     padding: "12px 24px",
+    cursor: "pointer"
+  },
+  desabilitado: {
+    opacity: 0.45,
+    cursor: "not-allowed"
+  },
+  voltar: {
+    width: "100%",
+    marginTop: "12px",
+    padding: "12px",
+    background: "transparent",
+    border: "1px solid var(--border)",
+    borderRadius: "6px",
+    color: "var(--text)",
     cursor: "pointer"
   }
 };

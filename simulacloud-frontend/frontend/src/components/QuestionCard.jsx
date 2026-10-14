@@ -1,6 +1,10 @@
 import { DOMINIOS } from "../data/questions.js";
 
-export default function QuestionCard({ questao, respostaSelecionada, onSelecionar }) {
+export default function QuestionCard({ questao }) {
+  const alternativaCorreta = questao.alternativas.find(
+    (alternativa) => alternativa.id === questao.correta
+  );
+
   return (
     <div style={styles.card}>
       <span style={styles.dominio}>{DOMINIOS[questao.dominio]}</span>
@@ -8,29 +12,33 @@ export default function QuestionCard({ questao, respostaSelecionada, onSeleciona
 
       <div style={styles.alternativas}>
         {questao.alternativas.map((alt) => {
-          const selecionada = respostaSelecionada === alt.id;
+          const correta = alt.id === questao.correta;
           return (
-            <button
+            <div
               key={alt.id}
-              onClick={() => onSelecionar(alt.id)}
               style={{
                 ...styles.alternativa,
-                ...(selecionada ? styles.alternativaSelecionada : {})
+                ...(correta ? styles.alternativaCorreta : {})
               }}
             >
-              <span
-                style={{
-                  ...styles.letra,
-                  ...(selecionada ? styles.letraSelecionada : {})
-                }}
-              >
+              <span style={{ ...styles.letra, ...(correta ? styles.letraCorreta : {}) }}>
                 {alt.id.toUpperCase()}
               </span>
-              <span>{alt.texto}</span>
-            </button>
+              <span style={styles.textoAlternativa}>{alt.texto}</span>
+              {correta && <span style={styles.seloCorreta}>Resposta correta</span>}
+            </div>
           );
         })}
       </div>
+
+      <section style={styles.resposta} aria-label="Resposta e explicação">
+        <p style={styles.tituloResposta}>Resposta</p>
+        <p style={styles.textoResposta}>
+          <strong>{alternativaCorreta?.id.toUpperCase()}.</strong> {alternativaCorreta?.texto}
+        </p>
+        <p style={styles.tituloExplicacao}>Por que essa é a resposta?</p>
+        <p style={styles.explicacao}>{questao.explicacao}</p>
+      </section>
     </div>
   );
 }
@@ -71,12 +79,11 @@ const styles = {
     borderRadius: "6px",
     padding: "14px 16px",
     color: "var(--text)",
-    cursor: "pointer",
     fontSize: "15px"
   },
-  alternativaSelecionada: {
-    borderColor: "var(--gold)",
-    background: "rgba(240, 180, 41, 0.08)"
+  alternativaCorreta: {
+    borderColor: "var(--green, #22c55e)",
+    background: "rgba(34, 197, 94, 0.09)"
   },
   letra: {
     fontFamily: "var(--font-mono)",
@@ -91,8 +98,47 @@ const styles = {
     border: "1px solid var(--border)",
     color: "var(--text-muted)"
   },
-  letraSelecionada: {
-    borderColor: "var(--gold)",
-    color: "var(--gold)"
+  letraCorreta: {
+    borderColor: "var(--green, #22c55e)",
+    color: "var(--green, #22c55e)"
+  },
+  textoAlternativa: {
+    flex: 1
+  },
+  seloCorreta: {
+    color: "var(--green, #22c55e)",
+    fontSize: "12px",
+    fontWeight: 600,
+    whiteSpace: "nowrap"
+  },
+  resposta: {
+    marginTop: "24px",
+    padding: "20px",
+    borderRadius: "6px",
+    background: "var(--surface-raised)",
+    border: "1px solid var(--border)"
+  },
+  tituloResposta: {
+    margin: "0 0 8px",
+    color: "var(--green, #22c55e)",
+    fontWeight: 700,
+    fontSize: "14px"
+  },
+  textoResposta: {
+    margin: "0 0 18px",
+    color: "var(--text)",
+    lineHeight: 1.6
+  },
+  tituloExplicacao: {
+    margin: "0 0 8px",
+    color: "var(--text)",
+    fontWeight: 600,
+    fontSize: "14px"
+  },
+  explicacao: {
+    margin: 0,
+    color: "var(--text-muted)",
+    lineHeight: 1.7,
+    fontSize: "14px"
   }
 };
