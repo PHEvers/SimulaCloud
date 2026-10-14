@@ -1,0 +1,26 @@
+# Arquivos e diretórios temporários do Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+*.tfplan
+
+# Variáveis e dados sensíveis
+*.tfvars
+*.tfvars.json
+!.terraform.tfvars.example
+
+# Pacotes de deploy compactados da Lambda
+*.zip
+
+# Arquivos temporários e ambientes virtuais do Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+env/
+ENV/
+
+# Arquivos do sistema operacional
+.DS_Store
+Thumbs.db
