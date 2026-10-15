@@ -1,11 +1,12 @@
 import { useLocation, useNavigate, Navigate } from "react-router-dom";
-import { questoes, DOMINIOS } from "../data/questions.js";
+import { questoes as questoesLocais, DOMINIOS } from "../data/questions.js";
 
 export default function Resultado() {
   const { state } = useLocation();
   const navigate = useNavigate();
+  const questoes = state?.questoes ?? questoesLocais;
 
-  if (!state?.respostas) {
+  if (!state?.respostas || !questoes.length) {
     return <Navigate to="/" replace />;
   }
 

@@ -1,6 +1,6 @@
 import { DOMINIOS } from "../data/questions.js";
 
-export default function QuestionCard({ questao }) {
+export default function QuestionCard({ questao, selecionada, confirmada, onSelecionar }) {
   const alternativaCorreta = questao.alternativas.find(
     (alternativa) => alternativa.id === questao.correta
   );
@@ -13,32 +13,49 @@ export default function QuestionCard({ questao }) {
       <div style={styles.alternativas}>
         {questao.alternativas.map((alt) => {
           const correta = alt.id === questao.correta;
+          const escolhida = alt.id === selecionada;
+          const estiloResultado = confirmada && correta
+            ? styles.alternativaCorreta
+            : confirmada && escolhida && !correta
+              ? styles.alternativaIncorreta
+              : escolhida
+                ? styles.alternativaSelecionada
+                : {};
           return (
-            <div
+            <button
               key={alt.id}
+              type="button"
+              onClick={() => !confirmada && onSelecionar(alt.id)}
+              disabled={confirmada}
+              aria-pressed={escolhida}
               style={{
                 ...styles.alternativa,
-                ...(correta ? styles.alternativaCorreta : {})
+                ...estiloResultado
               }}
             >
-              <span style={{ ...styles.letra, ...(correta ? styles.letraCorreta : {}) }}>
+              <span style={{ ...styles.letra, ...(confirmada && correta ? styles.letraCorreta : {}) }}>
                 {alt.id.toUpperCase()}
               </span>
               <span style={styles.textoAlternativa}>{alt.texto}</span>
-              {correta && <span style={styles.seloCorreta}>Resposta correta</span>}
-            </div>
+              {confirmada && correta && <span style={styles.seloCorreta}>Resposta correta</span>}
+              {confirmada && escolhida && !correta && <span style={styles.seloIncorreta}>Sua resposta</span>}
+            </button>
           );
         })}
       </div>
 
-      <section style={styles.resposta} aria-label="Resposta e explicação">
-        <p style={styles.tituloResposta}>Resposta</p>
-        <p style={styles.textoResposta}>
-          <strong>{alternativaCorreta?.id.toUpperCase()}.</strong> {alternativaCorreta?.texto}
-        </p>
-        <p style={styles.tituloExplicacao}>Por que essa é a resposta?</p>
-        <p style={styles.explicacao}>{questao.explicacao}</p>
-      </section>
+      {confirmada && (
+        <section style={styles.resposta} aria-live="polite" aria-label="Resultado e explicação">
+          <p style={{ ...styles.tituloResposta, color: selecionada === questao.correta ? "var(--green)" : "var(--red)" }}>
+            {selecionada === questao.correta ? "Resposta certa!" : "Não foi dessa vez."}
+          </p>
+          <p style={styles.textoResposta}>
+            <strong>Resposta correta: {alternativaCorreta?.id.toUpperCase()}.</strong> {alternativaCorreta?.texto}
+          </p>
+          <p style={styles.tituloExplicacao}>Explicação</p>
+          <p style={styles.explicacao}>{questao.explicacao}</p>
+        </section>
+      )}
     </div>
   );
 }
@@ -79,8 +96,13 @@ const styles = {
     borderRadius: "6px",
     padding: "14px 16px",
     color: "var(--text)",
-    fontSize: "15px"
+    fontSize: "15px",
+    fontFamily: "inherit",
+    width: "100%",
+    cursor: "pointer"
   },
+  alternativaSelecionada: { borderColor: "var(--teal)", background: "rgba(20, 184, 166, 0.1)" },
+  alternativaIncorreta: { borderColor: "var(--red)", background: "rgba(239, 68, 68, 0.09)" },
   alternativaCorreta: {
     borderColor: "var(--green, #22c55e)",
     background: "rgba(34, 197, 94, 0.09)"
@@ -111,6 +133,7 @@ const styles = {
     fontWeight: 600,
     whiteSpace: "nowrap"
   },
+  seloIncorreta: { color: "var(--red)", fontSize: "12px", fontWeight: 600, whiteSpace: "nowrap" },
   resposta: {
     marginTop: "24px",
     padding: "20px",

@@ -85,3 +85,9 @@ variable "common_tags" {
     Owner       = "devops"
   }
 }
+
+
+variable "github_oidc_subject" {
+  description = "Subject OIDC autorizado a publicar o frontend. Restrinja ao repositório e à branch de deploy."
+  type        = string
+}
