@@ -25,11 +25,28 @@ jobs:
       - uses: actions/setup-node@v7
         with:
           node-version: 22
-          cache: npm
-          cache-dependency-path: simulacloud-frontend/frontend/package-lock.json
 
       - run: npm ci
       - run: npm run build
+
+      - name: Conferir configuração do deploy
+        env:
+          AWS_ROLE_ARN: ${{ vars.AWS_ROLE_ARN }}
+          AWS_REGION: ${{ vars.AWS_REGION }}
+          S3_BUCKET: ${{ vars.S3_BUCKET }}
+          CLOUDFRONT_DISTRIBUTION_ID: ${{ vars.CLOUDFRONT_DISTRIBUTION_ID }}
+        run: |
+          missing=()
+          for name in AWS_ROLE_ARN AWS_REGION S3_BUCKET CLOUDFRONT_DISTRIBUTION_ID; do
+            if [[ -z "${!name}" ]]; then
+              missing+=("$name")
+            fi
+          done
+
+          if (( ${#missing[@]} > 0 )); then
+            echo "Variáveis ausentes em Settings > Secrets and variables > Actions > Variables: ${missing[*]}"
+            exit 1
+          fi
 
       - uses: aws-actions/configure-aws-credentials@v6
         with:

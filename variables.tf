@@ -87,7 +87,12 @@ variable "common_tags" {
 }
 
 
-variable "github_oidc_subject" {
-  description = "Subject OIDC autorizado a publicar o frontend. Restrinja ao repositório e à branch de deploy."
-  type        = string
+variable "github_oidc_subjects" {
+  description = "Subjects OIDC autorizados a publicar o frontend, restritos ao repositório e à branch de deploy."
+  type        = list(string)
+
+  validation {
+    condition     = length(var.github_oidc_subjects) > 0 && alltrue([for subject in var.github_oidc_subjects : can(regex("^repo:PHEvers(@[0-9]+)?/SimulaCloud(@[0-9]+)?:ref:refs/heads/main$", subject))])
+    error_message = "Informe somente subjects OIDC do repositório PHEvers/SimulaCloud na branch main."
+  }
 }

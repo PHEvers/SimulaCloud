@@ -87,6 +87,8 @@ Outputs usados pelo workflow:
 
 O arquivo terraform.tfvars é local e está no .gitignore. Não publique credenciais AWS nem chaves de acesso. A role do workflow usa OIDC e deve confiar somente no repositório e na branch configurados.
 
+Para este repositório, a role aceita os subjects OIDC antigo e imutável da branch principal: `repo:PHEvers/SimulaCloud:ref:refs/heads/main` e `repo:PHEvers@113642670/SimulaCloud@1387502457:ref:refs/heads/main`. Ambos ficam limitados ao mesmo repositório e à branch `main`; configure a lista em `github_oidc_subjects` no `terraform.tfvars` e aplique a atualização da role.
+
 ## Publicação automática do frontend
 
 O workflow .github/workflows/deploy-frontend.yml roda em push na branch main quando há alterações no frontend ou no próprio workflow. Também pode ser iniciado manualmente pelo GitHub Actions.
