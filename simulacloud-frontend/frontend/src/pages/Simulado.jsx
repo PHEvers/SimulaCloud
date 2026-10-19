@@ -8,8 +8,10 @@ export default function Simulado() {
   const navigate = useNavigate();
   const [questoes, setQuestoes] = useState([]);
   const [indice, setIndice] = useState(0);
+  const [limiteQuestoes, setLimiteQuestoes] = useState(0);
   const [alternativaSelecionada, setAlternativaSelecionada] = useState(null);
   const [confirmada, setConfirmada] = useState(false);
+  const [escolhendoContinuacao, setEscolhendoContinuacao] = useState(false);
   const [respostas, setRespostas] = useState({});
   const [erro, setErro] = useState("");
   const [carregando, setCarregando] = useState(true);
@@ -17,7 +19,11 @@ export default function Simulado() {
   useEffect(() => {
     const controller = new AbortController();
     buscarQuestoes(controller.signal)
-      .then((lista) => setQuestoes(selecionarDezQuestoes(lista)))
+      .then((lista) => {
+        const embaralhadas = embaralharQuestoes(lista);
+        setQuestoes(embaralhadas);
+        setLimiteQuestoes(Math.min(5, embaralhadas.length));
+      })
       .catch((error) => {
         if (error.name !== "AbortError") setErro(error.message || "Erro ao carregar as questões.");
       })
@@ -36,7 +42,22 @@ export default function Simulado() {
   }
 
   const questaoAtual = questoes[indice];
-  const ehUltima = indice === questoes.length - 1;
+  const ehUltimaDoBloco = indice === limiteQuestoes - 1;
+  const temMaisQuestoes = limiteQuestoes < questoes.length;
+
+  function analisarResultado() {
+    navigate("/resultado", {
+      state: { respostas, questoes: questoes.slice(0, limiteQuestoes) }
+    });
+  }
+
+  function carregarMaisQuestoes() {
+    setIndice(limiteQuestoes);
+    setLimiteQuestoes((limite) => Math.min(limite + 5, questoes.length));
+    setAlternativaSelecionada(null);
+    setConfirmada(false);
+    setEscolhendoContinuacao(false);
+  }
 
   function avancarQuestao() {
     if (!confirmada) {
@@ -47,8 +68,12 @@ export default function Simulado() {
       return;
     }
 
-    if (ehUltima) {
-      navigate("/resultado", { state: { respostas, questoes } });
+    if (ehUltimaDoBloco) {
+      if (temMaisQuestoes) {
+        setEscolhendoContinuacao(true);
+        return;
+      }
+      analisarResultado();
       return;
     }
     setIndice((i) => i + 1);
@@ -60,6 +85,29 @@ export default function Simulado() {
     setIndice((i) => Math.max(0, i - 1));
     setAlternativaSelecionada(null);
     setConfirmada(false);
+  }
+
+  if (escolhendoContinuacao) {
+    return (
+      <section className="container" style={styles.escolhaContainer}>
+        <span className="mono page-eyebrow">SIMULADO EM ANDAMENTO</span>
+        <h1 style={styles.escolhaTitulo}>Você respondeu {limiteQuestoes} questões</h1>
+        <p style={styles.escolhaTexto}>
+          Quer continuar praticando com mais 5 questões ou analisar seu resultado até aqui?
+        </p>
+        <div style={styles.escolhaAcoes}>
+          <button style={styles.botaoContinuar} onClick={carregarMaisQuestoes}>
+            Responder mais 5 questões
+          </button>
+          <button style={styles.botaoAnalisar} onClick={analisarResultado}>
+            Analisar resultado
+          </button>
+        </div>
+        <p style={styles.questoesRestantes}>
+          {questoes.length - limiteQuestoes} questões disponíveis neste simulado.
+        </p>
+      </section>
+    );
   }
 
   return (
@@ -87,16 +135,20 @@ export default function Simulado() {
         >
           Anterior
         </button>
-        <span style={styles.contador}>{indice + 1} de {questoes.length}</span>
+        <span style={styles.contador}>{indice + 1} de {questoes.length} questões</span>
       </div>
       <button
         style={{ ...styles.botaoFixo, ...(!confirmada && !alternativaSelecionada ? styles.desabilitado : {}) }}
         onClick={avancarQuestao}
         disabled={!confirmada && !alternativaSelecionada}
       >
-        {!confirmada ? "Confirmar resposta" : ehUltima ? "Ver resumo" : "Próxima pergunta"}
+        {!confirmada
+          ? "Confirmar resposta"
+          : ehUltimaDoBloco
+            ? temMaisQuestoes ? "Continuar" : "Ver resultado"
+            : "Próxima pergunta"}
       </button>
-      {ehUltima && (
+      {indice === questoes.length - 1 && (
         <button style={styles.voltar} onClick={() => navigate("/")}>
           Voltar para o início
         </button>
@@ -113,6 +165,29 @@ const styles = {
   },
   mensagem: { color: "var(--text-muted)", marginTop: "32px" },
   erro: { color: "var(--red)", marginTop: "32px" },
+  escolhaContainer: { paddingTop: "clamp(48px, 12vh, 120px)", maxWidth: "760px" },
+  escolhaTitulo: { margin: "14px 0 12px", fontSize: "clamp(28px, 5vw, 42px)" },
+  escolhaTexto: { color: "var(--text-muted)", lineHeight: 1.7, margin: "0 0 28px" },
+  escolhaAcoes: { display: "flex", flexWrap: "wrap", gap: "12px" },
+  botaoContinuar: {
+    background: "var(--gold)",
+    color: "#241a05",
+    border: "none",
+    borderRadius: "6px",
+    padding: "14px 20px",
+    fontWeight: 700,
+    cursor: "pointer"
+  },
+  botaoAnalisar: {
+    background: "transparent",
+    color: "var(--text)",
+    border: "1px solid var(--border)",
+    borderRadius: "6px",
+    padding: "14px 20px",
+    fontWeight: 600,
+    cursor: "pointer"
+  },
+  questoesRestantes: { color: "var(--text-muted)", fontSize: "13px", marginTop: "20px" },
   nav: {
     display: "flex",
     alignItems: "center",
@@ -162,11 +237,11 @@ const styles = {
   }
 };
 
-function selecionarDezQuestoes(lista) {
+function embaralharQuestoes(lista) {
   const embaralhadas = [...lista];
   for (let i = embaralhadas.length - 1; i > 0; i -= 1) {
     const j = Math.floor(Math.random() * (i + 1));
     [embaralhadas[i], embaralhadas[j]] = [embaralhadas[j], embaralhadas[i]];
   }
-  return embaralhadas.slice(0, 10);
+  return embaralhadas;
 }

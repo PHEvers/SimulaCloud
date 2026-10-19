@@ -42,7 +42,7 @@ export default function Home() {
           <Link className="home-secondary-action" to="/simulados">Ver simulados</Link>
         </div>
         <div className="home-facts" aria-label="Como funciona">
-          <span><strong>10</strong> questões por tentativa</span>
+          <span><strong>5</strong> questões por etapa</span>
           <span><strong>25</strong> questões no banco</span>
           <span>Sem cadastro</span>
         </div>
@@ -58,7 +58,7 @@ export default function Home() {
           <article className="home-feature-card">
             <span className="home-feature-number">01</span>
             <h3>Escolha uma alternativa</h3>
-            <p>Receba uma seleção aleatória de dez questões do banco de prática.</p>
+            <p>Responda cinco questões por vez e escolha se quer continuar ou analisar seu resultado.</p>
           </article>
           <article className="home-feature-card">
             <span className="home-feature-number">02</span>
@@ -95,7 +95,7 @@ export default function Home() {
       <section className="home-final-cta">
         <div>
           <span className="mono home-eyebrow">PRONTO PARA COMEÇAR?</span>
-          <h2>Faça uma tentativa de 10 questões.</h2>
+          <h2>Comece com cinco questões.</h2>
           <p>Você pode praticar sem criar uma conta. O progresso não é salvo entre sessões.</p>
         </div>
         <button className="home-primary-action" type="button" onClick={() => navigate("/simulado/A")}>

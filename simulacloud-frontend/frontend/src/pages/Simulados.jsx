@@ -4,8 +4,8 @@ const simulados = [
   {
     id: "A",
     titulo: "Simulado A — AWS Cloud Practitioner",
-    descricao: "Uma tentativa de prática com questões aleatórias em português dos quatro domínios da CLF-C02.",
-    quantidade: "10 questões por tentativa",
+    descricao: "Pratique com questões aleatórias em português e escolha se quer continuar após cada bloco.",
+    quantidade: "5 questões por etapa",
     status: "Disponível",
     disponivel: true,
   },

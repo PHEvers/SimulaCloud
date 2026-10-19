@@ -4,7 +4,7 @@ Plataforma educacional de prática para a certificação AWS Certified Cloud Pra
 
 ## Estado atual
 
-O MVP oferece um simulado de prática com 25 questões em português no banco. Cada tentativa seleciona 10 questões aleatórias. A pessoa escolhe uma alternativa, confirma a resposta e recebe o resultado e a explicação antes de avançar. Ao final, o site mostra a pontuação, o percentual de acertos, o desempenho por domínio e a revisão das respostas.
+O MVP oferece um banco com 25 questões em português. O Simulado A apresenta cinco questões aleatórias por etapa. Ao terminar cada etapa, a pessoa pode responder mais cinco ou analisar o resultado acumulado. Após cada resposta confirmada, recebe o resultado e a explicação. O resumo mostra a pontuação, o percentual de acertos, o desempenho por domínio e a revisão das questões respondidas.
 
 O Simulado A é o único disponível. Os simulados B e C estão em preparação. O perfil e o login ainda são demonstrativos; não há autenticação, histórico nem salvamento de progresso.
 
@@ -124,14 +124,14 @@ O endpoint POST /questions grava o item com o mesmo ID, substituindo a versão e
 
 - / — apresentação do projeto e início do simulado
 - /simulados — simulados disponíveis e em preparação
-- /simulado/A — tentativa de 10 questões
+- /simulado/A — etapas de 5 questões, com opção de continuar ou ver o resultado acumulado
 - /resultado — resumo e revisão da tentativa atual
 - /perfil — placeholder demonstrativo
 
 ## Limitações atuais
 
 - Apenas o Simulado A está disponível.
-- Cada tentativa usa uma seleção aleatória de 10 questões do banco.
+- O Simulado A oferece as questões em etapas de cinco; a pessoa escolhe quando encerrar e analisar o resultado.
 - Resultados e respostas não são salvos entre sessões.
 - Cadastro e autenticação ainda não foram implementados.
 - O projeto é independente e não possui vínculo, patrocínio ou endosso da Amazon Web Services.
