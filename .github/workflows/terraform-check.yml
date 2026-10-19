@@ -1,0 +1,37 @@
+name: Validar Terraform
+
+on:
+  pull_request:
+    paths:
+      - "**/*.tf"
+      - ".terraform.lock.hcl"
+      - ".github/workflows/terraform-check.yml"
+  push:
+    branches: [main]
+    paths:
+      - "**/*.tf"
+      - ".terraform.lock.hcl"
+      - ".github/workflows/terraform-check.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Baixar código
+        uses: actions/checkout@v7
+
+      - name: Instalar Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.12.2
+
+      - name: Inicializar provedores sem backend remoto
+        run: terraform init -backend=false -input=false
+
+      - name: Validar configuração
+        run: terraform validate

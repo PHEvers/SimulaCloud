@@ -3,16 +3,16 @@ import { Link } from "react-router-dom";
 const simulados = [
   {
     id: "A",
-    titulo: "Simulado A — Fundamentos Cloud",
-    descricao: "Conceitos de nuvem, economia e modelo de responsabilidade compartilhada.",
-    quantidade: "20 questões",
+    titulo: "Simulado A — AWS Cloud Practitioner",
+    descricao: "Uma tentativa de prática com questões aleatórias em português dos quatro domínios da CLF-C02.",
+    quantidade: "10 questões por tentativa",
     status: "Disponível",
     disponivel: true,
   },
   {
     id: "B",
     titulo: "Simulado B — Serviços AWS",
-    descricao: "Pratique os principais serviços de computação, armazenamento, rede e banco de dados.",
+    descricao: "Uma seleção temática sobre serviços de computação, armazenamento, rede e bancos de dados.",
     quantidade: "Em preparação",
     status: "Em breve",
     disponivel: false,

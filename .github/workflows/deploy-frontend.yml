@@ -4,7 +4,7 @@ on:
   push:
     branches: [main]
     paths:
-      - "SimulaCloud/simulacloud-frontend/frontend/**"
+      - "simulacloud-frontend/frontend/**"
       - ".github/workflows/deploy-frontend.yml"
   workflow_dispatch:
 
@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: SimulaCloud/simulacloud-frontend/frontend
+        working-directory: simulacloud-frontend/frontend
 
     steps:
       - uses: actions/checkout@v7
@@ -26,7 +26,7 @@ jobs:
         with:
           node-version: 22
           cache: npm
-          cache-dependency-path: SimulaCloud/simulacloud-frontend/frontend/package-lock.json
+          cache-dependency-path: simulacloud-frontend/frontend/package-lock.json
 
       - run: npm ci
       - run: npm run build

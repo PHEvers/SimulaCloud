@@ -1,229 +1,139 @@
 # SimulaCloud
 
-Plataforma de simulados para preparação e prática de certificações Cloud.
+Plataforma educacional de prática para a certificação AWS Certified Cloud Practitioner (CLF-C02).
 
-> Projeto desenvolvido com foco em aprendizado de desenvolvimento de software e práticas DevOps.
+## Estado atual
 
-## Sobre o projeto
+O MVP oferece um simulado de prática com 25 questões em português no banco. Cada tentativa seleciona 10 questões aleatórias. A pessoa escolhe uma alternativa, confirma a resposta e recebe o resultado e a explicação antes de avançar. Ao final, o site mostra a pontuação, o percentual de acertos, o desempenho por domínio e a revisão das respostas.
 
-O **SimulaCloud** é uma plataforma de simulados voltada para pessoas que estão se preparando para certificações de tecnologia.
-
-A primeira versão do projeto será focada no **AWS Certified Cloud Practitioner (CLF-C02)**, com possibilidade de suporte a outras certificações futuramente.
-
-O usuário poderá realizar simulados sem precisar criar uma conta. O cadastro será opcional e permitirá salvar resultados e acompanhar seu histórico de desempenho.
-
-## Funcionalidades
-
-### Simulados
-
-* [ ] Seleção de simulados
-* [ ] Questões de múltipla escolha
-* [ ] Navegação entre questões
-* [ ] Resultado ao finalizar
-* [ ] Explicação das respostas
-* [ ] Desempenho por domínio
-* [ ] Utilização sem cadastro
-
-### Usuários
-
-* [ ] Cadastro
-* [ ] Login
-* [ ] Salvar resultados
-* [ ] Histórico de simulados
-* [ ] Estatísticas de desempenho
-
-### Futuras funcionalidades
-
-* [ ] Modo prova
-* [ ] Simulados personalizados
-* [ ] Ranking
-* [ ] Sistema Premium
-* [ ] Remoção de anúncios para usuários Premium
-* [ ] Suporte a outras certificações
-* [ ] Monetização por anúncios
-
-## Arquitetura
-
-A arquitetura inicial será simples, permitindo que o projeto evolua gradualmente.
-
-```text
-                  ┌─────────────┐
-                  │   Frontend  │
-                  └──────┬──────┘
-                         │
-                         ▼
-                  ┌─────────────┐
-                  │  Backend API│
-                  └──────┬──────┘
-                         │
-                         ▼
-                  ┌─────────────┐
-                  │ PostgreSQL  │
-                  └─────────────┘
-```
-
-Com a evolução do projeto, serão incorporadas práticas de infraestrutura e DevOps:
-
-```text
-Git
- │
- ▼
-GitLab CI/CD
- │
- ├── Testes
- ├── Build
- ├── Docker
- └── Security Scan
-       │
-       ▼
-Container Registry
-       │
-       ▼
-      AWS
-       │
-       ▼
-  Kubernetes
-```
+O Simulado A é o único disponível. Os simulados B e C estão em preparação. O perfil e o login ainda são demonstrativos; não há autenticação, histórico nem salvamento de progresso.
 
 ## Tecnologias
 
-### Aplicação
+- Frontend: React 18, Vite 5 e React Router
+- API: Amazon API Gateway HTTP API
+- Backend: AWS Lambda com Python 3.12
+- Banco em produção: Amazon DynamoDB, modo sob demanda
+- Hospedagem: bucket S3 privado e Amazon CloudFront com OAC
+- Infraestrutura: Terraform
+- CI/CD do frontend: GitHub Actions com OIDC para acesso à AWS
 
-* Frontend: em definição
-* Backend: em definição
-* Banco de dados: PostgreSQL
+## Arquitetura atual
 
-### DevOps
+    Navegador ── HTTPS ── CloudFront ── OAC ── S3 privado (arquivos do frontend)
+         │
+         └── HTTPS ── API Gateway ── Lambda ── DynamoDB (questões)
 
-* Git
-* GitLab
-* Docker
-* Terraform
-* AWS
-* Kubernetes
-* Helm
-* GitLab CI/CD
+O frontend consulta GET /questions na API. A Lambda embaralha as alternativas e marca a resposta correta para o fluxo de estudo. Os arquivos do front-end são estáticos; a distribuição do CloudFront também encaminha rotas do React Router para index.html.
 
-### Observabilidade
+## Estrutura
 
-* Prometheus
-* Grafana
-* Logs
-* Alertas
+    SimulaCloud/
+    ├── .github/
+    │   └── workflows/
+    │       └── deploy-frontend.yml
+    │       └── terraform-check.yml
+    ├── lambda/
+    │   └── lambda_function.py
+    ├── simulacloud-frontend/
+    │   └── frontend/
+    │       ├── src/
+    │       ├── package.json
+    │       └── vite.config.js
+    ├── populate_db.py
+    ├── main.tf
+    ├── frontend.tf
+    ├── outputs.tf
+    ├── variables.tf
+    └── providers.tf
 
-> As tecnologias serão adicionadas ao projeto gradualmente conforme o desenvolvimento.
+As questões de produção ficam no DynamoDB. Não há atualmente um arquivo JSON ou SQL de carga versionado na raiz do repositório.
 
-## Objetivos do projeto
+## Executar o frontend localmente
 
-Além de criar uma plataforma funcional, o SimulaCloud será utilizado como laboratório prático para estudar e aplicar:
+Requisitos: Node.js 22 e npm.
 
-* Desenvolvimento de APIs
-* Desenvolvimento de aplicações web
-* Bancos de dados
-* Containers
-* Docker
-* CI/CD
-* Infrastructure as Code
-* AWS
-* Kubernetes
-* Helm
-* Segurança
-* Observabilidade
-* Automação de infraestrutura
+No diretório simulacloud-frontend/frontend:
 
-## Roadmap
+    npm ci
+    npm run dev
 
-### Fase 1 — MVP
+Para gerar uma versão de produção:
 
-* [ ] Criar frontend
-* [ ] Criar backend
-* [ ] Criar banco PostgreSQL
-* [ ] Criar modelo de questões
-* [ ] Implementar simulados
-* [ ] Exibir resultados
-* [ ] Containerizar aplicação
+    npm run build
 
-### Fase 2 — Usuários
+O Vite grava os arquivos em frontend/dist. A URL da API está configurada em src/services/questions.js.
 
-* [ ] Cadastro
-* [ ] Autenticação
-* [ ] Persistência dos resultados
-* [ ] Histórico
-* [ ] Estatísticas
+## Infraestrutura AWS com Terraform
 
-### Fase 3 — AWS
+Execute os comandos na raiz deste repositório, onde estão os arquivos Terraform:
 
-* [ ] Criar infraestrutura com Terraform
-* [ ] Configurar rede
-* [ ] Criar recursos computacionais
-* [ ] Configurar banco de dados
-* [ ] Criar Container Registry
-* [ ] Realizar deploy
+    terraform init
+    terraform plan
+    terraform apply
 
-### Fase 4 — Kubernetes
+Revise o plano antes de aplicar. A configuração cria a API, tabela DynamoDB, Lambda, bucket privado do frontend, distribuição CloudFront e a role OIDC para o workflow do GitHub.
 
-* [ ] Criar Deployments
-* [ ] Criar Services
-* [ ] Configurar Ingress
-* [ ] ConfigMaps
-* [ ] Secrets
-* [ ] Health Checks
-* [ ] Helm Chart
+Para consultar os valores de implantação:
 
-### Fase 5 — CI/CD
+    terraform output
 
-* [ ] Pipeline de testes
-* [ ] Build da aplicação
-* [ ] Build da imagem Docker
-* [ ] Security Scan
-* [ ] Push para Registry
-* [ ] Deploy automatizado
+Outputs usados pelo workflow:
 
-### Fase 6 — Observabilidade
+- frontend_bucket_name → S3_BUCKET
+- cloudfront_distribution_id → CLOUDFRONT_DISTRIBUTION_ID
+- github_deploy_role_arn → AWS_ROLE_ARN
+- frontend_aws_region → AWS_REGION
 
-* [ ] Prometheus
-* [ ] Grafana
-* [ ] Monitoramento da aplicação
-* [ ] Centralização de logs
-* [ ] Alertas
+O arquivo terraform.tfvars é local e está no .gitignore. Não publique credenciais AWS nem chaves de acesso. A role do workflow usa OIDC e deve confiar somente no repositório e na branch configurados.
 
-### Fase 7 — Monetização
+## Publicação automática do frontend
 
-* [ ] Implementar anúncios
-* [ ] Criar plano Premium
-* [ ] Remoção de anúncios para usuários Premium
-* [ ] Integração com sistema de pagamentos
+O workflow .github/workflows/deploy-frontend.yml roda em push na branch main quando há alterações no frontend ou no próprio workflow. Também pode ser iniciado manualmente pelo GitHub Actions.
 
-## Execução local
+Ele instala as dependências, cria o build, sincroniza frontend/dist com o bucket S3 e invalida o cache do CloudFront. Cadastre como variáveis do repositório GitHub:
 
-As instruções para execução local serão adicionadas conforme o MVP for desenvolvido.
+- AWS_ROLE_ARN
+- AWS_REGION
+- S3_BUCKET
+- CLOUDFRONT_DISTRIBUTION_ID
 
-## Estrutura do projeto
+O deploy automático publica apenas o frontend. Alterações no Terraform ou no backend precisam ser aplicadas separadamente.
 
-A estrutura será definida durante o desenvolvimento.
+## CI da infraestrutura
 
-```text
-simulacloud/
-├── frontend/
-├── backend/
-├── database/
-├── infrastructure/
-├── docker/
-└── README.md
-```
+O workflow `.github/workflows/terraform-check.yml` executa `terraform init` sem backend remoto e `terraform validate` em pull requests e pushes para `main` que alterem arquivos Terraform. Essa etapa verifica a configuração, mas não cria nem atualiza recursos AWS.
 
-## Conteúdo dos simulados
+O state atual do Terraform é local. Antes de automatizar `terraform plan` ou `terraform apply` no GitHub Actions, migre esse state para um backend remoto S3 com bloqueio de estado e configure o acesso OIDC da role para ler e gravar somente nesse backend. Até essa migração, aplique mudanças de infraestrutura manualmente após revisar `terraform plan`.
 
-As questões serão desenvolvidas especificamente para o SimulaCloud, utilizando como referência conteúdos públicos relacionados às certificações abordadas.
+## Banco de questões
 
-O SimulaCloud é um projeto independente e não possui vínculo, patrocínio ou endosso da Amazon Web Services.
+O script `populate_db.py` carrega questões de um arquivo JSON fornecido pelo operador. Para gravá-las diretamente no DynamoDB, configure credenciais AWS locais com permissão de escrita na tabela e execute na raiz:
 
-## Status
+    python populate_db.py caminho/para/questoes.json
 
-**Em desenvolvimento**
+O nome padrão da tabela é simulado-aws-questions-dev. Também é possível fornecer outro nome de tabela como segundo argumento. Para enviar os registros pela API, informe a URL base como segundo argumento:
 
----
+    python populate_db.py caminho/para/questoes.json https://71hxc7kuc2.execute-api.us-east-1.amazonaws.com
+
+O endpoint POST /questions grava o item com o mesmo ID, substituindo a versão existente. Preserve os IDs, correctOption e correctIndex ao editar enunciados ou alternativas para manter o gabarito consistente.
+
+## Rotas do frontend
+
+- / — apresentação do projeto e início do simulado
+- /simulados — simulados disponíveis e em preparação
+- /simulado/A — tentativa de 10 questões
+- /resultado — resumo e revisão da tentativa atual
+- /perfil — placeholder demonstrativo
+
+## Limitações atuais
+
+- Apenas o Simulado A está disponível.
+- Cada tentativa usa uma seleção aleatória de 10 questões do banco.
+- Resultados e respostas não são salvos entre sessões.
+- Cadastro e autenticação ainda não foram implementados.
+- O projeto é independente e não possui vínculo, patrocínio ou endosso da Amazon Web Services.
 
 ## Licença
 
-Este projeto está sendo desenvolvido para fins de estudo e portfólio.
+Projeto desenvolvido para estudo e portfólio.

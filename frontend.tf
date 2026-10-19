@@ -1,5 +1,3 @@
-data "aws_caller_identity" "current" {}
-
 locals {
   frontend_bucket_name = "${var.project_name}-frontend-${var.environment}-${data.aws_caller_identity.current.account_id}"
 }

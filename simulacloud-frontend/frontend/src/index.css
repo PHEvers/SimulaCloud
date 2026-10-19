@@ -530,3 +530,253 @@ button {
     grid-template-columns: 1fr;
   }
 }
+
+/* Landing page: apresenta o fluxo de estudo disponível no MVP. */
+.home-page {
+  max-width: 1040px;
+  padding-top: 42px;
+}
+
+.home-hero {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(28px, 6vw, 64px);
+  border: 1px solid rgba(79, 209, 197, 0.2);
+  border-radius: 18px;
+  background: linear-gradient(135deg, rgba(19, 27, 46, 0.98), rgba(17, 39, 53, 0.92));
+}
+
+.home-hero::after {
+  position: absolute;
+  top: -130px;
+  right: -100px;
+  width: 340px;
+  height: 340px;
+  border: 1px solid rgba(79, 209, 197, 0.13);
+  border-radius: 50%;
+  box-shadow: 0 0 0 36px rgba(79, 209, 197, 0.025), 0 0 0 72px rgba(79, 209, 197, 0.02);
+  content: "";
+  pointer-events: none;
+}
+
+.home-eyebrow {
+  color: var(--teal);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+}
+
+.home-hero h1 {
+  position: relative;
+  z-index: 1;
+  max-width: 720px;
+  margin-top: 18px;
+  font-size: clamp(34px, 5vw, 56px);
+  line-height: 1.08;
+}
+
+.home-lead {
+  max-width: 650px;
+  margin: 20px 0 0;
+  color: var(--text-muted);
+  font-size: 16px;
+  line-height: 1.75;
+}
+
+.home-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.home-primary-action,
+.home-secondary-action {
+  display: inline-flex;
+  min-height: 46px;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 0 20px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 140ms ease, background 140ms ease, border-color 140ms ease;
+}
+
+.home-primary-action {
+  background: var(--gold);
+  color: #241a05;
+}
+
+.home-primary-action:hover {
+  transform: translateY(-1px);
+  background: #ffca4d;
+}
+
+.home-secondary-action {
+  border-color: var(--border);
+  background: rgba(11, 18, 32, 0.35);
+  color: var(--text);
+}
+
+.home-secondary-action:hover {
+  border-color: var(--teal);
+}
+
+.home-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 24px;
+  margin-top: 34px;
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.home-facts strong {
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 14px;
+}
+
+.home-how,
+.home-domains {
+  margin-top: 64px;
+}
+
+.home-section-heading {
+  margin-bottom: 22px;
+}
+
+.home-section-heading h2,
+.home-final-cta h2 {
+  margin-top: 8px;
+  font-size: clamp(23px, 3vw, 30px);
+}
+
+.home-section-heading > p,
+.home-final-cta p {
+  margin: 8px 0 0;
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+.home-feature-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.home-feature-card,
+.home-domain-card {
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  background: rgba(19, 27, 46, 0.75);
+}
+
+.home-feature-card {
+  padding: 21px;
+}
+
+.home-feature-number,
+.home-domain-number {
+  color: var(--gold);
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
+.home-feature-card h3,
+.home-domain-card h3 {
+  margin-top: 12px;
+  font-size: 15px;
+}
+
+.home-feature-card p,
+.home-domain-card p {
+  margin: 7px 0 0;
+  color: var(--text-muted);
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.home-domain-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.home-domain-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  padding: 18px;
+}
+
+.home-domain-number {
+  display: inline-flex;
+  width: 34px;
+  height: 34px;
+  flex: 0 0 34px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(79, 209, 197, 0.18);
+  border-radius: 8px;
+  color: var(--teal);
+}
+
+.home-domain-card h3 {
+  margin-top: 0;
+}
+
+.home-final-cta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-top: 64px;
+  padding: 24px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: rgba(19, 27, 46, 0.72);
+}
+
+.home-footer {
+  margin-top: 38px;
+  padding: 22px 0 10px;
+  border-top: 1px solid var(--border);
+  color: var(--text-muted);
+  font-size: 11px;
+}
+
+.home-footer strong {
+  color: var(--text);
+  font-family: var(--font-display);
+  font-size: 14px;
+}
+
+.home-footer p {
+  max-width: 620px;
+  margin: 5px 0 0;
+}
+
+@media (max-width: 760px) {
+  .home-page {
+    padding-top: 24px;
+  }
+
+  .home-feature-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .home-domain-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .home-final-cta {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
