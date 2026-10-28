@@ -15,6 +15,9 @@ permissions:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    env:
+      VITE_COGNITO_USER_POOL_ID: ${{ vars.COGNITO_USER_POOL_ID }}
+      VITE_COGNITO_APP_CLIENT_ID: ${{ vars.COGNITO_APP_CLIENT_ID }}
     defaults:
       run:
         working-directory: simulacloud-frontend/frontend
@@ -26,18 +29,17 @@ jobs:
         with:
           node-version: 22
 
-      - run: npm ci
-      - run: npm run build
-
       - name: Conferir configuração do deploy
         env:
           AWS_ROLE_ARN: ${{ vars.AWS_ROLE_ARN }}
           AWS_REGION: ${{ vars.AWS_REGION }}
           S3_BUCKET: ${{ vars.S3_BUCKET }}
           CLOUDFRONT_DISTRIBUTION_ID: ${{ vars.CLOUDFRONT_DISTRIBUTION_ID }}
+          COGNITO_USER_POOL_ID: ${{ vars.COGNITO_USER_POOL_ID }}
+          COGNITO_APP_CLIENT_ID: ${{ vars.COGNITO_APP_CLIENT_ID }}
         run: |
           missing=()
-          for name in AWS_ROLE_ARN AWS_REGION S3_BUCKET CLOUDFRONT_DISTRIBUTION_ID; do
+          for name in AWS_ROLE_ARN AWS_REGION S3_BUCKET CLOUDFRONT_DISTRIBUTION_ID COGNITO_USER_POOL_ID COGNITO_APP_CLIENT_ID; do
             if [[ -z "${!name}" ]]; then
               missing+=("$name")
             fi
@@ -47,6 +49,9 @@ jobs:
             echo "Variáveis ausentes em Settings > Secrets and variables > Actions > Variables: ${missing[*]}"
             exit 1
           fi
+
+      - run: npm ci
+      - run: npm run build
 
       - uses: aws-actions/configure-aws-credentials@v6
         with:

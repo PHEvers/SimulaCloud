@@ -41,3 +41,14 @@ output "frontend_aws_region" {
   description = "Região AWS configurada para o projeto"
   value       = var.aws_region
 }
+
+output "cognito_user_pool_id" {
+  description = "ID do User Pool do Amazon Cognito"
+  value       = aws_cognito_user_pool.users.id
+}
+
+output "cognito_app_client_id" {
+  description = "ID público do app client usado pelo frontend"
+  value       = aws_cognito_user_pool_client.web.id
+}
+

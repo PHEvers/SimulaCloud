@@ -6,6 +6,7 @@ import Simulado from "./pages/Simulado.jsx";
 import Resultado from "./pages/Resultado.jsx";
 import Simulados from "./pages/Simulados.jsx";
 import Perfil from "./pages/Perfil.jsx";
+import Login from "./pages/Login.jsx";
 
 export default function App() {
   return (
@@ -18,6 +19,7 @@ export default function App() {
             <Route path="/" element={<Home />} />
             <Route path="/simulados" element={<Simulados />} />
             <Route path="/perfil" element={<Perfil />} />
+            <Route path="/login" element={<Login />} />
             <Route path="/simulado/A" element={<Simulado />} />
             <Route
               path="/simulado/:id"

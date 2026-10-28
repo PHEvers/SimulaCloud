@@ -134,6 +134,49 @@ button {
   color: var(--gold);
 }
 
+.site-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.site-account-link,
+.site-auth-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 36px;
+  padding: 0 13px;
+  border: 1px solid rgba(79, 209, 197, 0.35);
+  border-radius: 7px;
+  background: rgba(79, 209, 197, 0.08);
+  color: var(--teal);
+  font-size: 12px;
+  font-weight: 650;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.site-account-link:hover,
+.site-auth-button:hover {
+  background: rgba(79, 209, 197, 0.15);
+}
+
+.site-auth-button-quiet {
+  border-color: var(--border);
+  background: transparent;
+  color: var(--text-muted);
+}
+
+.site-account-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 0 3px rgba(63, 191, 127, 0.12);
+}
+
 .app-shell {
   display: grid;
   grid-template-columns: 252px minmax(0, 1fr);
@@ -519,6 +562,115 @@ button {
 .profile-status {
   display: inline-block;
   margin-top: 8px;
+}
+
+.auth-page {
+  max-width: 620px;
+  padding-top: 46px;
+}
+
+.auth-heading {
+  margin-bottom: 22px;
+}
+
+.auth-heading h1,
+.auth-card h1 {
+  margin-top: 10px;
+  font-size: clamp(28px, 4vw, 38px);
+}
+
+.auth-heading p,
+.auth-card > p {
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+.auth-card {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: rgba(19, 27, 46, 0.94);
+  padding: 25px;
+}
+
+.auth-form-card {
+  padding: 12px;
+  --amplify-colors-background-primary: #131b2e;
+  --amplify-colors-background-secondary: #1a2338;
+  --amplify-colors-font-primary: #e7ecf5;
+  --amplify-colors-font-secondary: #aab5c9;
+  --amplify-colors-border-primary: #263049;
+  --amplify-colors-brand-primary-10: #e5faf8;
+  --amplify-colors-brand-primary-80: #4fd1c5;
+  --amplify-colors-brand-primary-90: #3ab9ae;
+  --amplify-colors-brand-primary-100: #289e94;
+}
+
+.auth-form-card .amplify-authenticator,
+.auth-form-card .amplify-card {
+  background: transparent;
+  box-shadow: none;
+}
+
+.auth-form-title {
+  margin: 8px 0 0;
+  color: var(--text);
+  font-family: var(--font-display);
+  font-size: 19px;
+}
+
+.auth-loading {
+  color: var(--text-muted);
+}
+
+.auth-back-link,
+.auth-inline-link {
+  display: inline-block;
+  margin-top: 18px;
+  color: var(--teal);
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.auth-back-link:hover,
+.auth-inline-link:hover {
+  text-decoration: underline;
+}
+
+.auth-inline-link span {
+  margin-left: 5px;
+}
+
+.profile-auth-card {
+  margin-top: 22px;
+}
+
+@media (max-width: 560px) {
+  .site-header-inner {
+    padding: 0 16px;
+  }
+
+  .site-header-actions {
+    gap: 7px;
+  }
+
+  .site-account-link,
+  .site-auth-button {
+    min-height: 34px;
+    padding: 0 9px;
+  }
+
+  .site-account-link span:last-child {
+    display: none;
+  }
+
+  .auth-page {
+    padding-top: 30px;
+  }
+
+  .auth-card {
+    padding: 17px;
+  }
 }
 
 @media (max-width: 760px) {

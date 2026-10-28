@@ -24,3 +24,5 @@ ENV/
 # Arquivos do sistema operacional
 .DS_Store
 Thumbs.db
+
+/awscliv2.zip

@@ -19,6 +19,16 @@ npm run dev
 
 Acesse `http://localhost:5173`.
 
+### Conectar ao Amazon Cognito
+
+1. Na raiz do Terraform, execute `terraform output cognito_user_pool_id` e `terraform output cognito_app_client_id`.
+2. Copie `.env.example` para `.env.local` e substitua os valores de exemplo pelos outputs.
+3. Reinicie o servidor Vite para carregar as variáveis `VITE_COGNITO_USER_POOL_ID` e `VITE_COGNITO_APP_CLIENT_ID`.
+
+O cadastro e o login usam o AWS Amplify Auth conectado ao User Pool existente. O frontend não precisa de Identity Pool nem de client secret. Em produção, configure as mesmas variáveis como Actions Variables no GitHub, junto com `AWS_ROLE_ARN`, `AWS_REGION`, `S3_BUCKET` e `CLOUDFRONT_DISTRIBUTION_ID`.
+
+O acesso às questões continua público. A tela de perfil identifica a conta autenticada, mas o histórico ainda não é persistido: isso exige endpoints protegidos na API e uma tabela apropriada.
+
 ## Estrutura
 
 ```

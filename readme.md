@@ -133,7 +133,7 @@ O endpoint POST /questions grava o item com o mesmo ID, substituindo a versão e
 - Apenas o Simulado A está disponível.
 - O Simulado A oferece as questões em etapas de cinco; a pessoa escolhe quando encerrar e analisar o resultado.
 - Resultados e respostas não são salvos entre sessões.
-- Cadastro e autenticação ainda não foram implementados.
+- Cadastro e login opcionais usam Amazon Cognito no frontend. O perfil identifica a conta, mas o histórico de simulados ainda não é persistido.
 - O projeto é independente e não possui vínculo, patrocínio ou endosso da Amazon Web Services.
 
 ## Licença
