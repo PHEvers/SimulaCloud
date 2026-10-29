@@ -68,6 +68,7 @@ SimulaCloud/                         # Raiz do repositório e dos comandos Terra
 │   └── terraform-check.yml          # Valida a configuração Terraform
 ├── lambda/lambda_function.py        # Backend e regras de acesso
 ├── tests/test_permissions.py        # Testes locais das permissões
+├── data/simulado-c-projeto.json     # Conteúdo do simulado exclusivo do Admin
 ├── simulacloud-frontend/frontend/
 │   ├── src/                        # Código React
 │   ├── .env.example                # Modelo de configuração local do login
@@ -616,6 +617,14 @@ Para adicionar questões, prefira o formulário do site com perfil Admin ou Cola
 ```bash
 python3 populate_db.py caminho/para/questoes.json NOME_DA_TABELA
 ```
+
+O repositório inclui o Simulado C sobre a estrutura e o funcionamento do projeto. Para carregar sua configuração exclusiva do Admin e suas questões no ambiente padrão:
+
+```bash
+python3 populate_db.py data/simulado-c-projeto.json simulado-aws-questions-dev
+```
+
+Os IDs desse arquivo são estáveis. Reexecutar a carga atualiza os mesmos itens em vez de criar cópias. Revise a conta AWS e o nome da tabela antes de executar.
 
 Essa importação direta pode substituir itens com o mesmo `id`; não use o prefixo reservado `SIMULADO#` nos IDs de questões. O script também possui um modo HTTP, mas ele ainda não envia o token de autenticação exigido pela API atual. Esse modo precisa ser adaptado antes de uso.
 

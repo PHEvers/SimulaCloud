@@ -11,7 +11,7 @@ table = boto3.resource('dynamodb').Table(os.environ.get('TABLE_NAME', 'questions
 DEFAULTS = {
     'A': {'id': 'A', 'titulo': 'AWS Cloud Practitioner', 'access': 'public'},
     'B': {'id': 'B', 'titulo': 'Serviços AWS', 'access': 'members'},
-    'C': {'id': 'C', 'titulo': 'Revisão completa', 'access': 'admin'},
+    'C': {'id': 'C', 'titulo': 'Estrutura e funcionamento do SimulaCloud', 'access': 'admin'},
 }
 
 def response(status, body):

@@ -1,0 +1,217 @@
+[
+  {
+    "id": "SIMULADO#C",
+    "titulo": "Estrutura e funcionamento do SimulaCloud",
+    "access": "admin"
+  },
+  {
+    "id": "project-c-01",
+    "simuladoId": "C",
+    "domain": "Arquitetura",
+    "question": "Qual caminho entrega os arquivos do frontend do SimulaCloud ao navegador?",
+    "options": [
+      "CloudFront lê o conteúdo do bucket S3 privado por meio do OAC",
+      "API Gateway executa o React diretamente na função Lambda",
+      "Cognito armazena e distribui os arquivos JavaScript",
+      "DynamoDB converte as questões em páginas HTML"
+    ],
+    "correctIndex": 0,
+    "explanation": "O build do React gera arquivos estáticos no S3. O CloudFront os entrega por HTTPS e usa o Origin Access Control para ler o bucket privado."
+  },
+  {
+    "id": "project-c-02",
+    "simuladoId": "C",
+    "domain": "Arquitetura",
+    "question": "Qual é a sequência principal de uma consulta de questões feita pelo navegador?",
+    "options": [
+      "Navegador → S3 → Cognito → CloudWatch",
+      "Navegador → API Gateway → Lambda → DynamoDB",
+      "Navegador → IAM → CloudFront → Terraform",
+      "Navegador → GitHub Actions → Lambda → S3"
+    ],
+    "correctIndex": 1,
+    "explanation": "O API Gateway recebe a chamada HTTP, encaminha o evento para a Lambda e a função consulta os itens armazenados no DynamoDB."
+  },
+  {
+    "id": "project-c-03",
+    "simuladoId": "C",
+    "domain": "Arquitetura",
+    "question": "Por que o SimulaCloud pode ser chamado de aplicação serverless?",
+    "options": [
+      "Porque não usa nenhum serviço de backend",
+      "Porque todo o código é executado apenas no navegador",
+      "Porque usa serviços gerenciados e não exige administrar servidores próprios",
+      "Porque não possui banco de dados"
+    ],
+    "correctIndex": 2,
+    "explanation": "Lambda, API Gateway, DynamoDB, Cognito, S3 e CloudFront são serviços gerenciados. Ainda é necessário configurar código, dados, segurança e operação."
+  },
+  {
+    "id": "project-c-04",
+    "simuladoId": "C",
+    "domain": "Infraestrutura como Código",
+    "question": "Qual é a finalidade do comando terraform plan neste projeto?",
+    "options": [
+      "Aplicar imediatamente todas as mudanças na AWS",
+      "Comparar configuração, state e AWS para mostrar as mudanças previstas",
+      "Publicar o frontend no bucket S3",
+      "Criar um usuário Admin no Cognito"
+    ],
+    "correctIndex": 1,
+    "explanation": "O plan permite revisar criações, alterações, substituições e exclusões antes do apply. Ele não modifica a infraestrutura por si só."
+  },
+  {
+    "id": "project-c-05",
+    "simuladoId": "C",
+    "domain": "Infraestrutura como Código",
+    "question": "O que o arquivo terraform.tfstate representa?",
+    "options": [
+      "O código compilado do frontend",
+      "O histórico de respostas dos usuários",
+      "A associação entre a configuração Terraform e os recursos administrados",
+      "As credenciais permanentes do GitHub Actions"
+    ],
+    "correctIndex": 2,
+    "explanation": "O state registra quais objetos reais correspondem aos recursos declarados. Neste projeto ele ainda é local e não deve ser enviado ao Git."
+  },
+  {
+    "id": "project-c-06",
+    "simuladoId": "C",
+    "domain": "Infraestrutura como Código",
+    "question": "Qual alteração do projeto atualiza o código Python publicado na Lambda?",
+    "options": [
+      "Executar somente npm run build",
+      "Alterar lambda_function.py, gerar um novo plano e aplicar com Terraform",
+      "Invalidar apenas o cache do CloudFront",
+      "Adicionar o usuário ao grupo Admin"
+    ],
+    "correctIndex": 1,
+    "explanation": "O data source Archive empacota lambda_function.py e o hash do pacote faz o Terraform reconhecer e publicar a nova versão do código."
+  },
+  {
+    "id": "project-c-07",
+    "simuladoId": "C",
+    "domain": "CI/CD",
+    "question": "O que o workflow deploy-frontend.yml publica automaticamente?",
+    "options": [
+      "Toda a infraestrutura Terraform e a tabela DynamoDB",
+      "Somente os arquivos do frontend compilados para o S3, seguidos da invalidação do CloudFront",
+      "Somente o código Python da Lambda",
+      "Os membros dos grupos Cognito"
+    ],
+    "correctIndex": 1,
+    "explanation": "O workflow instala dependências, gera o build, sincroniza dist com o S3 e solicita a invalidação. Terraform e Lambda continuam no fluxo manual."
+  },
+  {
+    "id": "project-c-08",
+    "simuladoId": "C",
+    "domain": "CI/CD",
+    "question": "Por que o GitHub Actions usa OIDC para publicar o frontend?",
+    "options": [
+      "Para guardar uma chave AWS permanente dentro do repositório",
+      "Para obter credenciais temporárias ao assumir uma role autorizada na AWS",
+      "Para tornar o bucket S3 público",
+      "Para substituir o Cognito no login dos usuários"
+    ],
+    "correctIndex": 1,
+    "explanation": "OIDC permite autenticação temporária entre GitHub e AWS. A política de confiança limita a origem e a política IAM limita as ações permitidas."
+  },
+  {
+    "id": "project-c-09",
+    "simuladoId": "C",
+    "domain": "CI/CD",
+    "question": "O que o workflow terraform-check.yml faz atualmente?",
+    "options": [
+      "Executa terraform destroy após cada pull request",
+      "Aplica mudanças automaticamente na conta AWS",
+      "Inicializa os provedores sem backend e valida a configuração Terraform",
+      "Publica as questões no DynamoDB"
+    ],
+    "correctIndex": 2,
+    "explanation": "Esse workflow executa init com backend desativado e validate. Ele não executa plan nem apply e não altera recursos AWS."
+  },
+  {
+    "id": "project-c-10",
+    "simuladoId": "C",
+    "domain": "Segurança e Acesso",
+    "question": "Qual componente decide se um visitante, Básico, Colaborador ou Admin pode acessar um simulado?",
+    "options": [
+      "A Lambda, após validar a sessão e consultar os grupos Cognito",
+      "O arquivo CSS do frontend",
+      "O cache do CloudFront",
+      "O package-lock.json"
+    ],
+    "correctIndex": 0,
+    "explanation": "A proteção efetiva está no backend. A Lambda identifica o perfil e aplica a regra do simulado; esconder elementos na interface não protegeria a API."
+  },
+  {
+    "id": "project-c-11",
+    "simuladoId": "C",
+    "domain": "Segurança e Acesso",
+    "question": "Qual perfil pode configurar o acesso dos simulados e excluir questões?",
+    "options": [
+      "Visitante",
+      "Básico",
+      "Colaborador",
+      "Admin"
+    ],
+    "correctIndex": 3,
+    "explanation": "Admin possui acesso total. Colaborador pode criar questões nos simulados permitidos, mas não configura visibilidade nem exclui questões."
+  },
+  {
+    "id": "project-c-12",
+    "simuladoId": "C",
+    "domain": "Segurança e Acesso",
+    "question": "Qual afirmação diferencia corretamente o usuário IAM do usuário Cognito?",
+    "options": [
+      "São sempre a mesma identidade e usam a mesma senha",
+      "IAM administra recursos AWS; Cognito representa a conta que entra no SimulaCloud",
+      "Cognito aplica Terraform e IAM responde aos simulados",
+      "IAM existe apenas dentro do navegador"
+    ],
+    "correctIndex": 1,
+    "explanation": "A identidade usada pela AWS CLI opera a conta AWS. A identidade Cognito autentica a pessoa na aplicação; ser Admin no site não concede acesso à conta AWS."
+  },
+  {
+    "id": "project-c-13",
+    "simuladoId": "C",
+    "domain": "Operação e Diagnóstico",
+    "question": "Onde devem ser procurados os registros recentes da execução da função backend?",
+    "options": [
+      "No grupo de logs da Lambda no CloudWatch",
+      "Somente no histórico do navegador",
+      "Dentro do bucket S3 do frontend",
+      "Na lista de usuários do Cognito"
+    ],
+    "correctIndex": 0,
+    "explanation": "A Lambda envia registros de plataforma ao CloudWatch. O projeto cria um log group com retenção de sete dias."
+  },
+  {
+    "id": "project-c-14",
+    "simuladoId": "C",
+    "domain": "Operação e Diagnóstico",
+    "question": "Em um teste sem login, o acesso ao simulado B retorna HTTP 403. O que isso indica na configuração inicial?",
+    "options": [
+      "Que a API está necessariamente fora do ar",
+      "Que o visitante foi autenticado como Admin",
+      "Que a regra de acesso para usuários cadastrados bloqueou corretamente o visitante",
+      "Que a questão foi criada com sucesso"
+    ],
+    "correctIndex": 2,
+    "explanation": "HTTP 403 significa acesso negado. Para um simulado restrito a cadastrados, essa é a resposta esperada quando não há sessão."
+  },
+  {
+    "id": "project-c-15",
+    "simuladoId": "C",
+    "domain": "Operação e Diagnóstico",
+    "question": "Após uma nova versão do frontend ser enviada ao S3, por que o workflow invalida o cache do CloudFront?",
+    "options": [
+      "Para apagar a tabela DynamoDB",
+      "Para fazer a distribuição buscar os arquivos atualizados em vez de continuar servindo cópias antigas",
+      "Para remover os usuários do Cognito",
+      "Para recriar o state do Terraform"
+    ],
+    "correctIndex": 1,
+    "explanation": "A invalidação marca os objetos em cache para atualização. O navegador ainda pode manter cache local, mas o CloudFront deixa de servir a cópia anterior."
+  }
+]

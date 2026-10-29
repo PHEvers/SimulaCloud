@@ -15,7 +15,12 @@ const DOMINIO_POR_NOME = {
   "Segurança e Conformidade": "seguranca",
   "Tecnologia e Serviços": "tecnologia",
   "Faturamento e Precificação": "financeiro",
-  "Cobrança, Preços e Suporte": "financeiro"
+  "Cobrança, Preços e Suporte": "financeiro",
+  "Arquitetura": "arquitetura",
+  "Infraestrutura como Código": "iac",
+  "CI/CD": "cicd",
+  "Segurança e Acesso": "acesso",
+  "Operação e Diagnóstico": "operacao"
 };
 
 function normalizarQuestao(item) {

@@ -19,9 +19,12 @@ def populate_via_boto3(table_name, questions_file):
         for q in questions:
             batch.put_item(Item=q)
             count += 1
-            print(f"  [+] Inserida questão: {q['id']} - [{q['domain']}]")
+            if 'question' in q:
+                print(f"  [+] Inserida questão: {q['id']} - [{q.get('domain', 'sem domínio')}]")
+            else:
+                print(f"  [+] Inserida configuração: {q['id']}")
             
-    print(f"\n✅ Sucesso! {count} questões gravadas na tabela '{table_name}'.")
+    print(f"\n✅ Sucesso! {count} itens gravados na tabela '{table_name}'.")
 
 def populate_via_api(api_url, questions_file):
     """Envia as questões via requisições HTTP POST para o API Gateway"""

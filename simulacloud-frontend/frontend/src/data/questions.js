@@ -6,7 +6,12 @@ export const DOMINIOS = {
   conceitos: "Conceitos de Nuvem",
   seguranca: "Segurança e Conformidade",
   tecnologia: "Tecnologia e Serviços",
-  financeiro: "Faturamento e Precificação"
+  financeiro: "Faturamento e Precificação",
+  arquitetura: "Arquitetura",
+  iac: "Infraestrutura como Código",
+  cicd: "CI/CD",
+  acesso: "Segurança e Acesso",
+  operacao: "Operação e Diagnóstico"
 };
 
 export const questoes = [

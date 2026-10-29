@@ -56,7 +56,7 @@ export default function Simulado() {
 
   function analisarResultado() {
     navigate("/resultado", {
-      state: { respostas, questoes: questoes.slice(0, limiteQuestoes) }
+      state: { respostas, questoes: questoes.slice(0, limiteQuestoes), simuladoId: id }
     });
   }
 

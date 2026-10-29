@@ -17,7 +17,7 @@ export default function CriarQuestao() {
   if (!permitted) return <section className="container section-page"><h1>Acesso restrito</h1><p>Somente Admin e Colaborador podem criar questões.</p><Link to="/login">Entrar</Link></section>;
   return <section className="container section-page"><h1>Criar questão</h1><form className="question-form" onSubmit={submit}>
     <label>Simulado<select name="simuladoId" required>{items.map(i => <option key={i.id} value={i.id}>{i.id} — {i.titulo}</option>)}</select></label>
-    <label>Domínio<select name="domain">{["Conceitos de Nuvem","Segurança e Conformidade","Tecnologia e Serviços","Faturamento e Precificação"].map(d => <option key={d}>{d}</option>)}</select></label>
+    <label>Domínio<select name="domain">{["Conceitos de Nuvem","Segurança e Conformidade","Tecnologia e Serviços","Faturamento e Precificação","Arquitetura","Infraestrutura como Código","CI/CD","Segurança e Acesso","Operação e Diagnóstico"].map(d => <option key={d}>{d}</option>)}</select></label>
     <label>Enunciado<textarea name="question" required /></label>
     {[0,1,2,3].map(i => <label key={i}>Alternativa {i+1}<input name={"option"+i} required /></label>)}
     <label>Resposta correta<select name="correctIndex">{[0,1,2,3].map(i => <option key={i} value={i}>Alternativa {i+1}</option>)}</select></label>

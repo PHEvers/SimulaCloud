@@ -102,7 +102,7 @@ export default function Resultado() {
         </div>
       </section>
 
-      <button style={styles.cta} onClick={() => navigate("/simulado/A")}>
+      <button style={styles.cta} onClick={() => navigate(`/simulado/${state.simuladoId ?? "A"}`)}>
         Refazer simulado
       </button>
     </div>
