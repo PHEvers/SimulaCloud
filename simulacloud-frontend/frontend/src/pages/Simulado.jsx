@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { buscarQuestoes } from "../services/questions.js";
 import ProgressBar from "../components/ProgressBar.jsx";
 import QuestionCard from "../components/QuestionCard.jsx";
 
 export default function Simulado() {
   const navigate = useNavigate();
+  const { id } = useParams();
   const [questoes, setQuestoes] = useState([]);
   const [indice, setIndice] = useState(0);
   const [limiteQuestoes, setLimiteQuestoes] = useState(0);
@@ -17,8 +18,16 @@ export default function Simulado() {
   const [carregando, setCarregando] = useState(true);
 
   useEffect(() => {
+    setCarregando(true);
+    setErro("");
+    setQuestoes([]);
+    setIndice(0);
+    setRespostas({});
+    setAlternativaSelecionada(null);
+    setConfirmada(false);
+    setEscolhendoContinuacao(false);
     const controller = new AbortController();
-    buscarQuestoes(controller.signal)
+    buscarQuestoes(controller.signal, id)
       .then((lista) => {
         const embaralhadas = embaralharQuestoes(lista);
         setQuestoes(embaralhadas);
@@ -31,7 +40,7 @@ export default function Simulado() {
         if (!controller.signal.aborted) setCarregando(false);
       });
     return () => controller.abort();
-  }, []);
+  }, [id]);
 
   if (carregando) {
     return <div className="container"><p style={styles.mensagem}>Carregando questões...</p></div>;

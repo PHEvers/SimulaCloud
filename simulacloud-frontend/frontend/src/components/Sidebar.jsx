@@ -1,3 +1,4 @@
+import { useAuth } from "../contexts/AuthContext.jsx";
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 
@@ -8,6 +9,8 @@ const itensMenu = [
 ];
 
 export default function Sidebar() {
+  const { user } = useAuth();
+  const menu = [...itensMenu, ...(["admin", "colaborador"].includes(user?.role) ? [{to:"/questoes/nova", label:"Criar questão", icon:"+"}] : [])];
   const [mobileOpen, setMobileOpen] = useState(false);
   const fecharMenu = () => setMobileOpen(false);
 
@@ -33,7 +36,7 @@ export default function Sidebar() {
       >
         <div className="sidebar-section-label">MENU PRINCIPAL</div>
         <nav className="sidebar-nav">
-          {itensMenu.map((item) => (
+          {menu.map((item) => (
             <NavLink
               key={item.to}
               to={item.to}

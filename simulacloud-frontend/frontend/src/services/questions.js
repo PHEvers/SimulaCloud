@@ -1,4 +1,14 @@
-const API_URL = "https://71hxc7kuc2.execute-api.us-east-1.amazonaws.com/questions?shuffle=true";
+import { fetchAuthSession } from "aws-amplify/auth";
+import { cognitoConfigured } from "./cognito.js";
+const API_URL = (import.meta.env.VITE_API_URL || "https://71hxc7kuc2.execute-api.us-east-1.amazonaws.com").replace(/\/$/, "");
+export async function api(path, options = {}) {
+  const session = cognitoConfigured ? await fetchAuthSession() : null;
+  const token = session?.tokens?.accessToken?.toString();
+  const response = await fetch(API_URL + path, { ...options, headers: { "Content-Type": "application/json", ...(token ? { Authorization: "Bearer " + token } : {}), ...options.headers } });
+  const data = await response.json();
+  if (!response.ok) throw new Error(data.error || "Não foi possível concluir a operação.");
+  return data;
+}
 
 const DOMINIO_POR_NOME = {
   "Conceitos de Nuvem": "conceitos",
@@ -40,16 +50,8 @@ function normalizarQuestao(item) {
   };
 }
 
-export async function buscarQuestoes(signal) {
-  const response = await fetch(API_URL, { signal });
-  if (!response.ok) {
-    throw new Error(`Não foi possível carregar as questões (HTTP ${response.status}).`);
-  }
-
-  const data = await response.json();
-  if (!Array.isArray(data) || data.length === 0) {
-    throw new Error("A API não retornou questões disponíveis.");
-  }
-
+export async function buscarQuestoes(signal, simulado = "A") {
+  const data = await api("/questions?shuffle=true&simulado=" + encodeURIComponent(simulado), { signal });
+  if (!Array.isArray(data) || !data.length) throw new Error("Este simulado ainda não possui questões.");
   return data.map(normalizarQuestao);
 }

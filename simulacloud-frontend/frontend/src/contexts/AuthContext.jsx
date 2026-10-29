@@ -1,5 +1,5 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { fetchUserAttributes, getCurrentUser, signOut as amplifySignOut } from "aws-amplify/auth";
+import { fetchAuthSession, fetchUserAttributes, getCurrentUser, signOut as amplifySignOut } from "aws-amplify/auth";
 import { cognitoConfigured } from "../services/cognito.js";
 
 const AuthContext = createContext(null);
@@ -18,8 +18,11 @@ export function AuthProvider({ children }) {
     try {
       const currentUser = await getCurrentUser();
       const attributes = await fetchUserAttributes();
+      const session = await fetchAuthSession();
+      const groups = session.tokens?.accessToken.payload["cognito:groups"] ?? [];
       const sessionUser = {
         username: currentUser.username,
+        role: groups.includes("Admin") ? "admin" : groups.includes("Colaborador") ? "colaborador" : "basico",
         userId: currentUser.userId,
         email: attributes.email ?? currentUser.signInDetails?.loginId ?? "",
       };

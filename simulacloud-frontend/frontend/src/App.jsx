@@ -1,3 +1,4 @@
+import CriarQuestao from "./pages/CriarQuestao.jsx";
 import { Navigate, Route, Routes } from "react-router-dom";
 import Header from "./components/Header.jsx";
 import Sidebar from "./components/Sidebar.jsx";
@@ -20,18 +21,8 @@ export default function App() {
             <Route path="/simulados" element={<Simulados />} />
             <Route path="/perfil" element={<Perfil />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/simulado/A" element={<Simulado />} />
-            <Route
-              path="/simulado/:id"
-              element={
-                <div className="container unavailable-page">
-                  <span className="mono unavailable-eyebrow">EM PREPARAÇÃO</span>
-                  <h1>Este simulado ainda está sendo preparado</h1>
-                  <p>Por enquanto, o Simulado A está disponível com questões de prática.</p>
-                  <a href="/">Voltar para a página inicial</a>
-                </div>
-              }
-            />
+            <Route path="/questoes/nova" element={<CriarQuestao />} />
+            <Route path="/simulado/:id" element={<Simulado />} />
             <Route path="/resultado" element={<Resultado />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>

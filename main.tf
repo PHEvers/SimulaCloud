@@ -68,6 +68,11 @@ resource "aws_iam_policy" "lambda_policy" {
           "dynamodb:DeleteItem"
         ]
         Resource = aws_dynamodb_table.questions.arn
+      },
+      {
+        Effect = "Allow"
+        Action = ["cognito-idp:AdminListGroupsForUser"]
+        Resource = aws_cognito_user_pool.users.arn
       }
     ]
   })
@@ -97,6 +102,8 @@ resource "aws_lambda_function" "api_lambda" {
   environment {
     variables = {
       TABLE_NAME = aws_dynamodb_table.questions.name
+      USER_POOL_ID = aws_cognito_user_pool.users.id
+      USER_POOL_CLIENT_ID = aws_cognito_user_pool_client.web.id
     }
   }
 
@@ -156,6 +163,8 @@ resource "aws_apigatewayv2_integration" "lambda_integration" {
 # Mapeamento dinâmico das rotas da API
 resource "aws_apigatewayv2_route" "routes" {
   for_each = toset([
+    "GET /simulados",
+    "POST /simulados",
     "GET /questions",
     "GET /questions/{id}",
     "POST /questions",

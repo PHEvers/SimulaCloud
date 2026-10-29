@@ -1,61 +1,29 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-
-const simulados = [
-  {
-    id: "A",
-    titulo: "Simulado A — AWS Cloud Practitioner",
-    descricao: "Pratique com questões aleatórias em português e escolha se quer continuar após cada bloco.",
-    quantidade: "5 questões por etapa",
-    status: "Disponível",
-    disponivel: true,
-  },
-  {
-    id: "B",
-    titulo: "Simulado B — Serviços AWS",
-    descricao: "Uma seleção temática sobre serviços de computação, armazenamento, rede e bancos de dados.",
-    quantidade: "Em preparação",
-    status: "Em breve",
-    disponivel: false,
-  },
-  {
-    id: "C",
-    titulo: "Simulado C — Revisão completa",
-    descricao: "Questões distribuídas pelos domínios da certificação CLF-C02.",
-    quantidade: "Em preparação",
-    status: "Em breve",
-    disponivel: false,
-  },
-];
-
+import { useAuth } from "../contexts/AuthContext.jsx";
+import { api } from "../services/questions.js";
+const labels = { public: "Público — inclusive visitantes", members: "Colaborador e Básico", admin: "Somente Admin" };
 export default function Simulados() {
-  return (
-    <section className="container section-page">
-      <span className="mono page-eyebrow">AWS CERTIFIED CLOUD PRACTITIONER</span>
-      <h1>Simulados</h1>
-      <p className="page-intro">Escolha um simulado para estudar os conceitos e serviços da AWS.</p>
-
-      <div className="simulados-page-list">
-        {simulados.map((simulado) => (
-          <article className="simulado-page-card" key={simulado.id}>
-            <div className="simulado-page-card-top">
-              <span className="simulado-page-letter">{simulado.id}</span>
-              <span className={`simulado-page-status ${simulado.disponivel ? "is-available" : ""}`}>
-                {simulado.status}
-              </span>
-            </div>
-            <h2>{simulado.titulo}</h2>
-            <p>{simulado.descricao}</p>
-            <div className="simulado-page-card-bottom">
-              <span>{simulado.quantidade}</span>
-              {simulado.disponivel ? (
-                <Link className="simulado-page-action" to={`/simulado/${simulado.id}`}>Estudar <span aria-hidden="true">→</span></Link>
-              ) : (
-                <span className="simulado-page-disabled">Indisponível</span>
-              )}
-            </div>
-          </article>
-        ))}
-      </div>
-    </section>
-  );
+  const { user, loading } = useAuth();
+  const [items, setItems] = useState([]), [error, setError] = useState(""), [busy, setBusy] = useState(true), [saving, setSaving] = useState(false);
+  useEffect(() => {
+    if (loading) return;
+    const controller = new AbortController();
+    setBusy(true); setError(""); setItems([]);
+    api("/simulados", { signal: controller.signal }).then(setItems).catch(e => { if (!controller.signal.aborted) setError(e.message); }).finally(() => { if (!controller.signal.aborted) setBusy(false); });
+    return () => controller.abort();
+  }, [user, loading]);
+  async function change(item, access) {
+    setSaving(true); setError("");
+    try { await api("/simulados", { method: "POST", body: JSON.stringify({ id: item.id, access }) }); setItems(items.map(i => i.id === item.id ? { ...i, access } : i)); }
+    catch(e) { setError(e.message); } finally { setSaving(false); }
+  }
+  return <section className="container section-page"><h1>Simulados</h1><p className="page-intro">Simulados disponíveis para {user ? ({admin:"Admin", colaborador:"Colaborador", basico:"Básico"}[user.role]) : "visitantes"}.</p>
+    {error && <p role="alert">{error}</p>}{(busy || loading) && <p>Carregando...</p>}
+    <div className="simulados-page-list">{items.map(item => <article className="simulado-page-card" key={item.id}><h2>Simulado {item.id} — {item.titulo}</h2><p>{labels[item.access]}</p>
+      {user?.role === "admin" && <label>Acesso <select disabled={saving} value={item.access} onChange={e => change(item, e.target.value)}>{Object.entries(labels).map(([value,label]) => <option key={value} value={value}>{label}</option>)}</select></label>}
+      <div className="simulado-page-card-bottom"><Link className="simulado-page-action" to={"/simulado/" + item.id}>Estudar →</Link></div></article>)}</div>
+    {!busy && !items.length && !error && <p>Nenhum simulado disponível.</p>}
+    {!user && <Link to="/login">Entre para acessar os simulados para cadastrados.</Link>}
+  </section>;
 }

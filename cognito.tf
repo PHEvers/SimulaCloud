@@ -74,3 +74,8 @@ resource "aws_cognito_user_pool_client" "web" {
     refresh_token = "days"
   }
 }
+resource "aws_cognito_user_group" "roles" {
+  for_each = toset(["Admin", "Colaborador", "Basico"])
+  name = each.value
+  user_pool_id = aws_cognito_user_pool.users.id
+}

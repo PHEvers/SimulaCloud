@@ -139,3 +139,12 @@ O endpoint POST /questions grava o item com o mesmo ID, substituindo a versão e
 ## Licença
 
 Projeto desenvolvido para estudo e portfólio.
+
+
+## Perfis e acesso
+
+Aplique a infraestrutura atualizada e publique o frontend para ativar as regras. No Cognito, atribua usuários aos grupos Admin, Colaborador ou Basico. Contas sem grupo são Básico; não é possível escolher privilégios no cadastro. Alterações de grupo aparecem na interface após renovar a sessão. O servidor consulta os grupos a cada chamada autenticada.
+
+Admin tem acesso total e configura a visibilidade na página Simulados. Colaborador cria questões e acessa simulados públicos e para cadastrados. Básico acessa públicos e para cadastrados. Visitantes acessam somente públicos. A restrição exclusiva do Admin tem prioridade sobre o acesso do Colaborador.
+
+Por padrão: A público, B para cadastrados, C exclusivo do Admin. Questões existentes sem simuladoId pertencem ao A. B e C começam sem questões; use Criar questão para preenchê-los. A configuração de acesso é persistida no DynamoDB. Para configurar o endereço da API, use VITE_API_URL. A importação via API agora exige Authorization com token de acesso válido.

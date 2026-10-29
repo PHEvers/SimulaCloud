@@ -932,3 +932,8 @@ button {
     flex-direction: column;
   }
 }
+
+.question-form { display: grid; gap: 18px; max-width: 680px; margin-top: 24px; }
+.question-form label { display: grid; gap: 8px; }
+.question-form input, .question-form textarea, select { padding: 12px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); color: var(--text); font: inherit; }
+.question-form textarea { min-height: 100px; }
